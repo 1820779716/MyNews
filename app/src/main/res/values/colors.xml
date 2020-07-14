@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#F44336</color>
+    <color name="colorPrimaryDark">#F44336</color>
+    <color name="colorAccent">#FF5722</color>
+    <color name="white">#FFFFFF</color>
+    <color name="gray">#DBDBDB</color>
+    <color name="gray_press">#BEBEBE</color>
+    <color name="black">#333333</color>
+    <color name="register">#FF2C2C</color>
+    <color name="register_press">#FF0808</color>
+    <color name="login">#03A9F4</color>
+    <color name="login_press">#2196F3</color>
+    <color name="blue">#2196F3</color>
+</resources>
