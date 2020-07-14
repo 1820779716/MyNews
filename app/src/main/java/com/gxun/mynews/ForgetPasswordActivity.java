@@ -1,9 +1,11 @@
 package com.gxun.mynews;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
@@ -13,14 +15,25 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.gxun.mynews.entity.UserInfo;
+import com.gxun.mynews.util.HttpUtil;
 import com.gxun.mynews.util.Validator;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.Response;
 
 public class ForgetPasswordActivity extends AppCompatActivity implements View.OnClickListener {
 
     private TextView tvCancel;
     private EditText etUserName, etPassword, etRePassword, etEmail;
     private Button btnReset;
-
+String TAG="ForgetPasswordActivity";
     private boolean isEmailRight = false;
 
     @Override
@@ -69,10 +82,12 @@ public class ForgetPasswordActivity extends AppCompatActivity implements View.On
     }
 
     public void goReset(){
+        String forgetPassAddress="http://localhost:8080/MyNewServer/forgetPassword";
         String username = etUserName.getText().toString();
         String password = etPassword.getText().toString();
         String rePassword = etRePassword.getText().toString();
         String email = etEmail.getText().toString();
+        UserInfo userInfo =new UserInfo(null,username,password,rePassword,email);
         if (username == null && username.equals("")){
             Toast.makeText(this, "用户名不能为空", Toast.LENGTH_LONG).show();
         }else if (password == null && password.equals("")){
@@ -82,7 +97,7 @@ public class ForgetPasswordActivity extends AppCompatActivity implements View.On
         }else if (!isEmailRight){
             Toast.makeText(this, "邮箱错误", Toast.LENGTH_LONG).show();
         }else{
-
+            forgetPasswordWithOkHttp(forgetPassAddress,userInfo);
         }
     }
 
@@ -109,5 +124,44 @@ public class ForgetPasswordActivity extends AppCompatActivity implements View.On
             return true;
         }
         return super.onKeyDown(keyCode, event);
+    }
+
+    public void forgetPasswordWithOkHttp(String address, UserInfo userInfo) {
+        HttpUtil.forgetPasswordWithOkHttp(address, userInfo, new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                //在这里对异常情况进行处理
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                //得到服务器返回的具体内容
+                final String responseData = response.body().string();
+
+                try {
+                    final JSONObject jsonObject = new JSONObject(responseData);
+                    Log.d(TAG, responseData);
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            try {
+                                if (jsonObject.getBoolean("flag") == true) {
+                                    Intent intent = new Intent(ForgetPasswordActivity.this, LoginActivity.class);
+                                    startActivity(intent);
+                                    Toast.makeText(ForgetPasswordActivity.this, "注册成功", Toast.LENGTH_SHORT).show();
+                                } else {
+                                    //Toast.makeText(RegisterActivity.this,"登录失败",Toast.LENGTH_SHORT).show();
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    });
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        });
     }
 }
