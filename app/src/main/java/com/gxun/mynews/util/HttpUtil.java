@@ -2,6 +2,7 @@ package com.gxun.mynews.util;
 
 import com.alibaba.fastjson.JSON;
 import com.google.gson.JsonObject;
+import com.gxun.mynews.entity.Collect;
 import com.gxun.mynews.entity.History;
 import com.gxun.mynews.entity.UserInfo;
 
@@ -81,10 +82,23 @@ public class HttpUtil {
                 .build();
         client.newCall(request).enqueue(callback);
     }
-    public static void inputWithOkHttp(String url,String inputSome,okhttp3.Callback callback){
+
+    public static void addHistoryWithOkhttp(String addrsss,History h,okhttp3.Callback callback){
         OkHttpClient client = new OkHttpClient();
         RequestBody body = new FormBody.Builder()
-                .add("inputSome",inputSome)
+                .add("h",JSON.toJSONString(h))
+                .build();
+        Request request = new Request.Builder()
+                .url(addrsss)
+                .post(body)
+                .build();
+        client.newCall(request).enqueue(callback);
+    }
+
+    public static void getCollectWithOkHttp(String url, Collect collect, okhttp3.Callback callback){
+        OkHttpClient client = new OkHttpClient();
+        RequestBody body = new FormBody.Builder()
+                .add("c",JSON.toJSONString(collect))
                 .build();
         Request request = new Request.Builder()
                 .url(url)
@@ -92,14 +106,10 @@ public class HttpUtil {
                 .build();
         client.newCall(request).enqueue(callback);
     }
-    public static void saveOrderWithOkhttp(String url, String orderid, String rece, String ads, String phonenum, String price,okhttp3.Callback callback){
+    public static void addCollectWithOkhttp(String url, Collect collect,okhttp3.Callback callback){
         OkHttpClient client = new OkHttpClient();
         RequestBody body = new FormBody.Builder()
-                .add("orderId",orderid)
-                .add("receiver",rece)
-                .add("address",ads)
-                .add("phone",phonenum)
-                .add("price",price)
+                .add("c",JSON.toJSONString(collect))
                 .build();
         Request request = new Request.Builder()
                 .url(url)
@@ -107,22 +117,34 @@ public class HttpUtil {
                 .build();
         client.newCall(request).enqueue(callback);
     }
-    public static void allOrderWithOkhttp(String address,okhttp3.Callback callback){
+    public static void getCollectWithOkhttp(String url, Collect collect,okhttp3.Callback callback){
+        OkHttpClient client = new OkHttpClient();
+        RequestBody body = new FormBody.Builder()
+                .add("c",JSON.toJSONString(collect))
+                .build();
+        Request request = new Request.Builder()
+                .url(url)
+                .post(body)
+                .build();
+        client.newCall(request).enqueue(callback);
+    }
+    public static void delCollectWithOkhttp(String url, Collect collect,okhttp3.Callback callback){
+        OkHttpClient client = new OkHttpClient();
+        RequestBody body = new FormBody.Builder()
+                .add("c",JSON.toJSONString(collect))
+                .build();
+        Request request = new Request.Builder()
+                .url(url)
+                .post(body)
+                .build();
+        client.newCall(request).enqueue(callback);
+    }
+
+    public static void delAllCollectWithOkhttp(String address, okhttp3.Callback callback){
         OkHttpClient client = new OkHttpClient();
         RequestBody body = new FormBody.Builder().build();
         Request request = new Request.Builder()
                 .url(address)
-                .post(body)
-                .build();
-        client.newCall(request).enqueue(callback);
-    }
-    public static void deleteOrderWithOkhttp(String url,String orderId,okhttp3.Callback callback){
-        OkHttpClient client = new OkHttpClient();
-        RequestBody body = new FormBody.Builder()
-                .add("orderid",orderId)
-                .build();
-        Request request = new Request.Builder()
-                .url(url)
                 .post(body)
                 .build();
         client.newCall(request).enqueue(callback);
