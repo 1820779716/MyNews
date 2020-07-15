@@ -26,6 +26,7 @@ public class AppConst {
         // String logout = SERVER_ADDRESS+"/logout.do";
          String register = SERVER_ADDRESS+"register";
          String getUser = SERVER_ADDRESS+"/getUser";
+        String checkEmailOrTel = SERVER_ADDRESS+"/checkEmailOrTel";
          String forgetPassword=SERVER_ADDRESS+"/forgetPassword";
          String modifyUserInformaintion=SERVER_ADDRESS+"/modifyUserInformaintion";
          String changePassword=SERVER_ADDRESS+"/changePassword";

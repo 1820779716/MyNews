@@ -35,6 +35,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     EditText etUserName, etPassword, etRePassword, etTel, etEmail;
     Button btnRegister;
     String TAG = "RegisterActivity";
+    String MSG;
     private static boolean isTelRight = false;
     private static boolean isEmailRight = false;
 
@@ -77,6 +78,35 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
             @Override
             public void afterTextChanged(Editable s) {
                 ValidateEmail();
+            }
+        });
+
+        etEmail.setOnFocusChangeListener(new android.view.View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus) {
+// 此处为得到焦点时的处理内容
+                } else {
+                    String checkAddress = AppConst.UserInfo.checkEmailOrTel;
+                    String email = etEmail.getText().toString();
+                    UserInfo userInfo = new UserInfo();
+                    userInfo.setEmail(email);
+                    checkEmailOrTelWithOkHttp(checkAddress, userInfo);
+                }
+            }
+        });
+        etTel.setOnFocusChangeListener(new android.view.View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus) {
+// 此处为得到焦点时的处理内容
+                } else {
+                    String checkAddress = AppConst.UserInfo.checkEmailOrTel;
+                    String tel = etTel.getText().toString();
+                    UserInfo userInfo = new UserInfo();
+                    userInfo.setEmail(tel);
+                    checkEmailOrTelWithOkHttp(checkAddress, userInfo);
+                }
             }
         });
 
@@ -127,6 +157,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         } else if (!isEmailRight) {
             Toast.makeText(this, "邮箱错误", Toast.LENGTH_LONG).show();
         } else {
+
             registerWithOkHttp(resAddress, userInfo);
         }
     }
@@ -186,6 +217,42 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                                     Toast.makeText(RegisterActivity.this, "注册成功", Toast.LENGTH_SHORT).show();
                                 } else {
                                     //Toast.makeText(RegisterActivity.this,"登录失败",Toast.LENGTH_SHORT).show();
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    });
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        });
+    }
+    public void checkEmailOrTelWithOkHttp(String address, UserInfo userInfo) {
+        HttpUtil.checkEmailOrTelWithOkHttp(address, userInfo, new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                //在这里对异常情况进行处理
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                //得到服务器返回的具体内容
+                final String responseData = response.body().string();
+
+                try {
+                    final JSONObject jsonObject = new JSONObject(responseData);
+                    Log.d(TAG, responseData);
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            try {
+                                if (jsonObject.getBoolean("flag") == true) {
+                                    Toast.makeText(RegisterActivity.this, jsonObject.getString("msg"), Toast.LENGTH_SHORT).show();
+                                } else {
+                                   // Toast.makeText(RegisterActivity.this,MSG,Toast.LENGTH_SHORT).show();
                                 }
                             } catch (JSONException e) {
                                 e.printStackTrace();

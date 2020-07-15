@@ -39,6 +39,18 @@ public class HttpUtil {
                 .build();
         client.newCall(request).enqueue(callback);
     }
+    //检查邮箱和手机号是否重复
+    public static void checkEmailOrTelWithOkHttp(String address,UserInfo u,okhttp3.Callback callback){
+        OkHttpClient client = new OkHttpClient();
+        RequestBody body = new FormBody.Builder()
+                .add("u",JSON.toJSONString(u))
+                .build();
+        Request request = new Request.Builder()
+                .url(address)
+                .post(body)
+                .build();
+        client.newCall(request).enqueue(callback);
+    }
     //忘记密码
     public static void forgetPasswordWithOkHttp(String address,HashMap<String,Object> u,okhttp3.Callback callback){
         OkHttpClient client = new OkHttpClient();
