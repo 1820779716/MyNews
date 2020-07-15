@@ -23,7 +23,7 @@ public class AppConst {
 
     public interface UserInfo{
          String login = SERVER_ADDRESS+"/login";
-        // String logout = SERVER_ADDRESS+"/user/logout.do";
+        // String logout = SERVER_ADDRESS+"/logout.do";
          String register = SERVER_ADDRESS+"register";
          String getUser = SERVER_ADDRESS+"/getUser";
          String forgetPassword=SERVER_ADDRESS+"/forgetPassword";

@@ -6,6 +6,8 @@ import com.gxun.mynews.entity.Collect;
 import com.gxun.mynews.entity.History;
 import com.gxun.mynews.entity.UserInfo;
 
+import java.util.HashMap;
+
 import okhttp3.FormBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -14,7 +16,7 @@ import okhttp3.RequestBody;
 public class HttpUtil {
     public static Object goodsWithOkhttp;
 
-    public static void loginWithOkHttp(String address, UserInfo u, okhttp3.Callback callback){
+    public static void loginWithOkHttp(String address,UserInfo u, okhttp3.Callback callback){
         OkHttpClient client = new OkHttpClient();
         RequestBody body = new FormBody.Builder()
                 .add("u",JSON.toJSONString(u))
@@ -38,7 +40,7 @@ public class HttpUtil {
         client.newCall(request).enqueue(callback);
     }
     //忘记密码
-    public static void forgetPasswordWithOkHttp(String address,UserInfo u,okhttp3.Callback callback){
+    public static void forgetPasswordWithOkHttp(String address,HashMap<String,Object> u,okhttp3.Callback callback){
         OkHttpClient client = new OkHttpClient();
         RequestBody body = new FormBody.Builder()
                 .add("u",JSON.toJSONString(u))

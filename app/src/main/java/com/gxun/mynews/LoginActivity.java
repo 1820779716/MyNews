@@ -16,11 +16,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.gxun.mynews.entity.UserInfo;
 import com.gxun.mynews.util.AppConst;
 import com.gxun.mynews.util.HttpUtil;
+import com.gxun.mynews.util.RegexUtils;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.HashMap;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -84,14 +86,20 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
 
     public void goLogin(){
-        String loginAddress= AppConst.UserInfo.login;
-        String account= etUserName.getText().toString().trim();
-        String password = etPassword.getText().toString().trim();
         UserInfo userInfo=new UserInfo();
-        userInfo.setUserId(account);
+        String loginAddress= AppConst.UserInfo.login;
+        String key= etUserName.getText().toString().trim();
+        String password = etPassword.getText().toString().trim();
         userInfo.setPassword(password);
+        if (RegexUtils.isMobileSimple(key)){
+            userInfo.setTel(key);
+        }else if(RegexUtils.isEmail(key)){
+             userInfo.setEmail(key);
+        }else {
+            userInfo.setUserId(key);
+        }
 
-        if (TextUtils.isEmpty(account)){
+        if (TextUtils.isEmpty(key)){
             Toast.makeText(this,"登录名不能为空", Toast.LENGTH_LONG).show();
         }else if (TextUtils.isEmpty(password)){
             Toast.makeText(this,"密码不能为空", Toast.LENGTH_LONG).show();
@@ -100,7 +108,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         }
     }
 
-    public void loginWithOkHttp(String address,UserInfo u){
+    public void loginWithOkHttp(String address, UserInfo u){
         HttpUtil.loginWithOkHttp(address,u, new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {

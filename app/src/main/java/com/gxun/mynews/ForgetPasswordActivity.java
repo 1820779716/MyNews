@@ -24,6 +24,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.HashMap;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -32,7 +33,7 @@ import okhttp3.Response;
 public class ForgetPasswordActivity extends AppCompatActivity implements View.OnClickListener {
 
     private TextView tvCancel;
-    private EditText etUserName, etPassword, etRePassword, etEmail;
+    private EditText etAccount, etPassword, etRePassword, etEmail;
     private Button btnReset;
 String TAG="ForgetPasswordActivity";
     private boolean isEmailRight = false;
@@ -67,7 +68,7 @@ String TAG="ForgetPasswordActivity";
 
     public void initWidget(){
         tvCancel = findViewById(R.id.cancel);
-        etUserName = findViewById(R.id.username);
+        etAccount = findViewById(R.id.account);
         etPassword = findViewById(R.id.password);
         etRePassword = findViewById(R.id.rePassword);
         etEmail = findViewById(R.id.email);
@@ -83,14 +84,19 @@ String TAG="ForgetPasswordActivity";
     }
 
     public void goReset(){
+        HashMap<String,Object> u = null;
         String forgetPassAddress= AppConst.UserInfo.forgetPassword;
-        String username = etUserName.getText().toString();
+        String account = etAccount.getText().toString();
         String password = etPassword.getText().toString();
         String rePassword = etRePassword.getText().toString();
         String email = etEmail.getText().toString();
-        UserInfo userInfo =new UserInfo(null,username,password,rePassword,email);
-        if (username == null && username.equals("")){
-            Toast.makeText(this, "用户名不能为空", Toast.LENGTH_LONG).show();
+
+        u.put("userId",account);
+        u.put("check",email);
+        u.put("newPassWord",rePassword);
+       // UserInfo userInfo =new UserInfo(null,null,password,rePassword,email);
+        if (account == null && account.equals("")){
+            Toast.makeText(this, "账号不能为空", Toast.LENGTH_LONG).show();
         }else if (password == null && password.equals("")){
             Toast.makeText(this, "密码不能为空", Toast.LENGTH_LONG).show();
         }else if (!password.equals(rePassword)){
@@ -98,7 +104,7 @@ String TAG="ForgetPasswordActivity";
         }else if (!isEmailRight){
             Toast.makeText(this, "邮箱错误", Toast.LENGTH_LONG).show();
         }else{
-            forgetPasswordWithOkHttp(forgetPassAddress,userInfo);
+            forgetPasswordWithOkHttp(forgetPassAddress,u);
         }
     }
 
@@ -127,8 +133,8 @@ String TAG="ForgetPasswordActivity";
         return super.onKeyDown(keyCode, event);
     }
 
-    public void forgetPasswordWithOkHttp(String address, UserInfo userInfo) {
-        HttpUtil.forgetPasswordWithOkHttp(address, userInfo, new Callback() {
+    public void forgetPasswordWithOkHttp(String address, HashMap<String,Object> u) {
+        HttpUtil.forgetPasswordWithOkHttp(address, u, new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
                 //在这里对异常情况进行处理
@@ -149,7 +155,7 @@ String TAG="ForgetPasswordActivity";
                                 if (jsonObject.getBoolean("flag") == true) {
                                     Intent intent = new Intent(ForgetPasswordActivity.this, LoginActivity.class);
                                     startActivity(intent);
-                                    Toast.makeText(ForgetPasswordActivity.this, "注册成功", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(ForgetPasswordActivity.this, "找回成功，请登录", Toast.LENGTH_SHORT).show();
                                 } else {
                                     //Toast.makeText(RegisterActivity.this,"登录失败",Toast.LENGTH_SHORT).show();
                                 }
