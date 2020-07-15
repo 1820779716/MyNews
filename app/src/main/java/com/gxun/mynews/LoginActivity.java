@@ -3,7 +3,6 @@ package com.gxun.mynews;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
@@ -22,7 +21,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.util.HashMap;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -33,7 +31,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     Button btnLogin;
     TextView tvCancel, tvRegister, tvForgetPassword;
     EditText etUserName, etPassword;
-  String TAG ="loginActivity";
+    String TAG ="loginActivity";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -82,9 +80,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         startActivity(intent);
     }
 
-
-
-
     public void goLogin(){
         UserInfo userInfo=new UserInfo();
         String loginAddress= AppConst.UserInfo.login;
@@ -108,7 +103,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
     public void loginWithOkHttp(String address, UserInfo u){
-        HttpUtil.loginWithOkHttp(address,u, new Callback() {
+        HttpUtil.loginWithOkHttp(address, u, new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
                 //在这里对异常情况进行处理
@@ -117,20 +112,23 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             public void onResponse(Call call, Response response) throws IOException {
                 //得到服务器返回的具体内容
                 final String responseData = response.body().string();
-
                 try {
+                    // 转为JSONObject对象
                     final JSONObject jsonObject = new JSONObject(responseData);
-                    Log.d(TAG, responseData);
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
                             try {
                                 if (jsonObject.getBoolean("flag")==true){
-                                    Intent intent = new Intent(LoginActivity.this,MainActivity.class);
-                                    startActivity(intent);
-                                    Toast.makeText(LoginActivity.this,jsonObject.getString("msg"),Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(LoginActivity.this, jsonObject.getString("msg"),Toast.LENGTH_SHORT).show();
+                                    Intent intent = new Intent();
+                                    //把需要返回的数据存放在intent
+                                    intent.putExtra("userName", jsonObject.getString("userName"));
+                                    //设置返回数据
+                                    setResult(RESULT_OK, intent);
+                                    finish();
                                 }else{
-                                    Toast.makeText(LoginActivity.this,jsonObject.getString("msg"),Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(LoginActivity.this, jsonObject.getString("msg"),Toast.LENGTH_SHORT).show();
                                 }
                             } catch (JSONException e) {
                                 e.printStackTrace();
@@ -140,13 +138,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-
             }
         });
     }
-
-
-
     // 设置点击返回键事件
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {

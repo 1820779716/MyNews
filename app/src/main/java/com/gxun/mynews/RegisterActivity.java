@@ -1,7 +1,5 @@
 package com.gxun.mynews;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -14,6 +12,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.gxun.mynews.entity.UserInfo;
 import com.gxun.mynews.util.AppConst;
@@ -85,7 +85,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if (hasFocus) {
-// 此处为得到焦点时的处理内容
+                    // 此处为得到焦点时的处理内容
                 } else {
                     String checkAddress = AppConst.UserInfo.checkEmailOrTel;
                     String email = etEmail.getText().toString();
@@ -157,7 +157,6 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         } else if (!isEmailRight) {
             Toast.makeText(this, "邮箱错误", Toast.LENGTH_LONG).show();
         } else {
-
             registerWithOkHttp(resAddress, userInfo);
         }
     }
@@ -230,6 +229,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
             }
         });
     }
+
     public void checkEmailOrTelWithOkHttp(String address, UserInfo userInfo) {
         HttpUtil.checkEmailOrTelWithOkHttp(address, userInfo, new Callback() {
             @Override
@@ -252,7 +252,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                                 if (jsonObject.getBoolean("flag") == true) {
                                     Toast.makeText(RegisterActivity.this, jsonObject.getString("msg"), Toast.LENGTH_SHORT).show();
                                 } else {
-                                   // Toast.makeText(RegisterActivity.this,MSG,Toast.LENGTH_SHORT).show();
+                                    // Toast.makeText(RegisterActivity.this,MSG,Toast.LENGTH_SHORT).show();
                                 }
                             } catch (JSONException e) {
                                 e.printStackTrace();

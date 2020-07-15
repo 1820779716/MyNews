@@ -1,15 +1,5 @@
 package com.gxun.mynews;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.core.view.GravityCompat;
-import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.Manifest;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -21,6 +11,16 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.navigation.NavigationView;
 import com.gxun.mynews.Adapter.RecycleAdapter;
@@ -154,15 +154,23 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     public void gotoFavorite() {
-        Intent intent = new Intent();
-        intent.setClass(this, CollectActivity.class);
-        startActivityForResult(intent, LOGIN_REQUEST_CODE);
+        if (isLogin) {
+            Intent intent = new Intent();
+            intent.setClass(this, CollectActivity.class);
+            startActivityForResult(intent, LOGIN_REQUEST_CODE);
+        }else{
+            Toast.makeText(this, "请先登录", Toast.LENGTH_LONG).show();
+        }
     }
 
     public void gotoHistory() {
-        Intent intent = new Intent();
-        intent.setClass(this, HistoryActivity.class);
-        startActivityForResult(intent, LOGIN_REQUEST_CODE);
+        if (isLogin) {
+            Intent intent = new Intent();
+            intent.setClass(this, HistoryActivity.class);
+            startActivityForResult(intent, LOGIN_REQUEST_CODE);
+        }else{
+            Toast.makeText(this, "请先登录", Toast.LENGTH_LONG).show();
+        }
     }
 
     public void checkExit() {
