@@ -14,6 +14,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.gxun.mynews.entity.History;
+import com.gxun.mynews.util.AppConst;
 import com.gxun.mynews.util.HttpUtil;
 
 import org.jetbrains.annotations.NotNull;
@@ -35,7 +36,7 @@ public class HistoryActivity extends AppCompatActivity implements View.OnClickLi
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_history);
-        String address="http://localhost:8080/MyNews/getHistory";
+        String getHistoryAddress= AppConst.History.getHistory;
 
         initWidget();
         initData();

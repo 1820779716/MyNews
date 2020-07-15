@@ -16,6 +16,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.gxun.mynews.entity.UserInfo;
+import com.gxun.mynews.util.AppConst;
 import com.gxun.mynews.util.HttpUtil;
 import com.gxun.mynews.util.Validator;
 
@@ -82,7 +83,7 @@ String TAG="ForgetPasswordActivity";
     }
 
     public void goReset(){
-        String forgetPassAddress="http://localhost:8080/MyNewServer/forgetPassword";
+        String forgetPassAddress= AppConst.UserInfo.forgetPassword;
         String username = etUserName.getText().toString();
         String password = etPassword.getText().toString();
         String rePassword = etRePassword.getText().toString();

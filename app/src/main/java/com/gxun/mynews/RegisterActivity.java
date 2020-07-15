@@ -16,6 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.gxun.mynews.entity.UserInfo;
+import com.gxun.mynews.util.AppConst;
 import com.gxun.mynews.util.HttpUtil;
 import com.gxun.mynews.util.Validator;
 
@@ -108,7 +109,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     }
 
     public void goRegister() {
-        String resAddress = "http://localhost:8080/MyNews/register";
+        String resAddress = AppConst.UserInfo.register;
         String username = etUserName.getText().toString();
         String password = etPassword.getText().toString();
         String rePassword = etRePassword.getText().toString();

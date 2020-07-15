@@ -14,6 +14,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.gxun.mynews.entity.UserInfo;
+import com.gxun.mynews.util.AppConst;
 import com.gxun.mynews.util.HttpUtil;
 
 import org.json.JSONException;
@@ -83,7 +84,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
 
     public void goLogin(){
-        String loginAddress="http://localhost:8080/MyNewServer/login";
+        String loginAddress= AppConst.UserInfo.login;
         String account= etUserName.getText().toString().trim();
         String password = etPassword.getText().toString().trim();
         UserInfo userInfo=new UserInfo();
