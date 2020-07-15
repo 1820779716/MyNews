@@ -90,7 +90,6 @@ public class HistoryActivity extends AppCompatActivity implements View.OnClickLi
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 String responseData = response.body().string();
-//                Log.i("11111",responseData);
                 Gson gson = new Gson();
                 histories = gson.fromJson(responseData, new TypeToken<List<History>>() {}.getType());
                 Message message = new Message();
