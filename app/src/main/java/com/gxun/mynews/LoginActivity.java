@@ -3,7 +3,6 @@ package com.gxun.mynews;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
@@ -15,6 +14,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.gxun.mynews.entity.UserInfo;
 import com.gxun.mynews.util.AppConst;
+import com.gxun.mynews.util.Convert;
 import com.gxun.mynews.util.HttpUtil;
 import com.gxun.mynews.util.RegexUtils;
 
@@ -77,7 +77,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     public void geResetPassword(){
         Intent intent = new Intent();
-        intent.setClass(this, RegisterActivity.class);
+        intent.setClass(this, ForgetPasswordActivity.class);
         startActivity(intent);
     }
 
@@ -86,25 +86,20 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         String loginAddress= AppConst.UserInfo.login;
         String key= etUserName.getText().toString().trim();
         String password = etPassword.getText().toString().trim();
-        Log.d(TAG,"测试11");
         if (TextUtils.isEmpty(key)){
             Toast.makeText(this,"登录名不能为空", Toast.LENGTH_LONG).show();
         }else if (TextUtils.isEmpty(password)){
             Toast.makeText(this,"密码不能为空", Toast.LENGTH_LONG).show();
         }else{
-            Log.d(TAG,"测试2");
             userInfo.setPassword(password);
             if (RegexUtils.isMobileSimple(key)){
-                Log.d(TAG,"测试3");
                 userInfo.setTel(key);
             }else if(RegexUtils.isEmail(key)){
-
                 userInfo.setEmail(key);
             }else {
 
                 userInfo.setUserId(key);
             }
-
             loginWithOkHttp(loginAddress,userInfo);
         }
     }
@@ -122,6 +117,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 try {
                     // 转为JSONObject对象
                     final JSONObject jsonObject = new JSONObject(responseData);
+                    final UserInfo userInfo = Convert.fromJson(jsonObject.getString("user"), UserInfo.class);
+
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
@@ -129,8 +126,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                 if (jsonObject.getBoolean("flag")==true){
                                     Toast.makeText(LoginActivity.this, jsonObject.getString("msg"),Toast.LENGTH_SHORT).show();
                                     Intent intent = new Intent();
+                                    intent.setClass(LoginActivity.this, MainActivity.class);
                                     //把需要返回的数据存放在intent
-                                    intent.putExtra("userName", jsonObject.getString("userName"));
+                                    intent.putExtra("userId", userInfo.getUserId());
+                                    intent.putExtra("userName", userInfo.getUserName());
                                     //设置返回数据
                                     setResult(RESULT_OK, intent);
                                     finish();

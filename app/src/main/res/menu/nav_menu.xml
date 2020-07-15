@@ -6,17 +6,17 @@
         <item
             android:id="@+id/favorite"
             android:icon="@drawable/ic_star_border_favourite"
-            android:title="收藏"/>
+            android:title="收藏" />
         <item
             android:id="@+id/history"
             android:icon="@drawable/ic_history_black_24dp"
-            android:title="历史"/>
+            android:title="历史" />
         <item
             android:id="@+id/exit"
             android:icon="@drawable/ic_exit_to_app_black_24dp"
-            android:title="退出"/>
+            android:title="退出" />
         <item
-        android:id="@+id/click_me"
-        android:title="登录"/>
+            android:id="@+id/click_me"
+            android:title="登录" />
     </group>
 </menu>

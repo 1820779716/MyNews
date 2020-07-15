@@ -1,11 +1,9 @@
 package com.gxun.mynews;
 
-import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
@@ -15,7 +13,6 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.gxun.mynews.entity.UserInfo;
 import com.gxun.mynews.util.AppConst;
 import com.gxun.mynews.util.HttpUtil;
 import com.gxun.mynews.util.Validator;
@@ -35,7 +32,6 @@ public class ForgetPasswordActivity extends AppCompatActivity implements View.On
     private TextView tvCancel;
     private EditText etAccount, etPassword, etRePassword, etEmail;
     private Button btnReset;
-String TAG="ForgetPasswordActivity";
     private boolean isEmailRight = false;
 
     @Override
@@ -147,17 +143,14 @@ String TAG="ForgetPasswordActivity";
 
                 try {
                     final JSONObject jsonObject = new JSONObject(responseData);
-                    Log.d(TAG, responseData);
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
                             try {
                                 if (jsonObject.getBoolean("flag") == true) {
-                                    Intent intent = new Intent(ForgetPasswordActivity.this, LoginActivity.class);
-                                    startActivity(intent);
                                     Toast.makeText(ForgetPasswordActivity.this, jsonObject.getString("msg"), Toast.LENGTH_SHORT).show();
+                                    finish();
                                 } else {
-                                    //Toast.makeText(RegisterActivity.this,"登录失败",Toast.LENGTH_SHORT).show();
                                 }
                             } catch (JSONException e) {
                                 e.printStackTrace();
@@ -167,7 +160,6 @@ String TAG="ForgetPasswordActivity";
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-
             }
         });
     }

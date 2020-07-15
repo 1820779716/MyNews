@@ -1,5 +1,6 @@
 package com.gxun.mynews;
 
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
@@ -12,6 +13,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.gxun.mynews.entity.UserInfo;
@@ -210,8 +212,16 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                         public void run() {
                             try {
                                 if (jsonObject.getBoolean("flag") == true) {
-                                    finish();
-                                    Toast.makeText(RegisterActivity.this, jsonObject.getString("msg"), Toast.LENGTH_SHORT).show();
+//                                    Toast.makeText(RegisterActivity.this, jsonObject.getString("msg"), Toast.LENGTH_SHORT).show();
+                                    new AlertDialog.Builder(RegisterActivity.this)
+                                            .setMessage(jsonObject.getString("msg"))
+                                            .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                                                @Override
+                                                public void onClick(DialogInterface dialog, int which) {
+                                                    // 点击“确认”后的操作
+                                                    RegisterActivity.this.finish();
+                                                }
+                                            }).show();
                                 } else {
                                     //Toast.makeText(RegisterActivity.this,"登录失败",Toast.LENGTH_SHORT).show();
                                 }
@@ -239,7 +249,6 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
             public void onResponse(Call call, Response response) throws IOException {
                 //得到服务器返回的具体内容
                 final String responseData = response.body().string();
-
                 try {
                     final JSONObject jsonObject = new JSONObject(responseData);
                     Log.d(TAG, responseData);

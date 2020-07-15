@@ -55,10 +55,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private void initWidget() {
         drawerLayout = findViewById(R.id.drawerLayout);
         tvMenu = findViewById(R.id.menu);
-        tvAccount = findViewById(R.id.account);
         navigationView = findViewById(R.id.navigation_view);
         recyclerView = findViewById(R.id.recycler_view);
-        ivHead = findViewById(R.id.head);
+        View v = navigationView.getHeaderView(0);
+        tvAccount = (TextView) v.findViewById(R.id.account);
+        ivHead = (ImageView) v.findViewById(R.id.head);
     }
 
     private void initData() {
@@ -128,9 +129,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     public void logout() {
         isLogin = false;
-        tvAccount.setText("未登录");
-        MenuItem item = findViewById(R.id.click_me);
-        item.setTitle("登录");
+        tvAccount.setText("点击上方头像登录");
+        navigationView.getMenu().getItem(3).setTitle("登录");
         ivHead.setImageResource(R.mipmap.undefined);
     }
 
@@ -139,11 +139,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case LOGIN_REQUEST_CODE:
                 if (resultCode == RESULT_OK) { //正常返回且有结果
                     super.onActivityResult(requestCode, resultCode, intent);
+                    String userId = intent.getExtras().getString("userId");
                     String userName = intent.getExtras().getString("userName");
-                    tvAccount.setText(userName);
+                    tvAccount.setText("ID:" + userId + "\n用户名:" + userName);
                     isLogin = true;
-                    MenuItem item = findViewById(R.id.click_me);
-                    item.setTitle("注销");
+                    navigationView.getMenu().getItem(3).setTitle("注销");
                     ivHead.setImageResource(R.mipmap.login_head);
                 }
                 break;
