@@ -214,7 +214,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                                 if (jsonObject.getBoolean("flag") == true) {
                                     Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
                                     startActivity(intent);
-                                    Toast.makeText(RegisterActivity.this, "注册成功", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(RegisterActivity.this, jsonObject.getString("msg"), Toast.LENGTH_SHORT).show();
                                 } else {
                                     //Toast.makeText(RegisterActivity.this,"登录失败",Toast.LENGTH_SHORT).show();
                                 }

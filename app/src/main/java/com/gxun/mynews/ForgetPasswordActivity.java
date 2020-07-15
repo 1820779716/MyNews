@@ -155,7 +155,7 @@ String TAG="ForgetPasswordActivity";
                                 if (jsonObject.getBoolean("flag") == true) {
                                     Intent intent = new Intent(ForgetPasswordActivity.this, LoginActivity.class);
                                     startActivity(intent);
-                                    Toast.makeText(ForgetPasswordActivity.this, "找回成功，请登录", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(ForgetPasswordActivity.this, jsonObject.getString("msg"), Toast.LENGTH_SHORT).show();
                                 } else {
                                     //Toast.makeText(RegisterActivity.this,"登录失败",Toast.LENGTH_SHORT).show();
                                 }

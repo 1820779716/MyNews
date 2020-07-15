@@ -128,9 +128,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                 if (jsonObject.getBoolean("flag")==true){
                                     Intent intent = new Intent(LoginActivity.this,MainActivity.class);
                                     startActivity(intent);
-                                    Toast.makeText(LoginActivity.this,"登录成功",Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(LoginActivity.this,jsonObject.getString("msg"),Toast.LENGTH_SHORT).show();
                                 }else{
-                                    Toast.makeText(LoginActivity.this,"登录失败",Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(LoginActivity.this,jsonObject.getString("msg"),Toast.LENGTH_SHORT).show();
                                 }
                             } catch (JSONException e) {
                                 e.printStackTrace();
