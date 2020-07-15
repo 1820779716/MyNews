@@ -3,6 +3,7 @@ package com.gxun.mynews;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
@@ -85,19 +86,25 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         String loginAddress= AppConst.UserInfo.login;
         String key= etUserName.getText().toString().trim();
         String password = etPassword.getText().toString().trim();
+        Log.d(TAG,"测试11");
         if (TextUtils.isEmpty(key)){
             Toast.makeText(this,"登录名不能为空", Toast.LENGTH_LONG).show();
         }else if (TextUtils.isEmpty(password)){
             Toast.makeText(this,"密码不能为空", Toast.LENGTH_LONG).show();
         }else{
+            Log.d(TAG,"测试2");
             userInfo.setPassword(password);
             if (RegexUtils.isMobileSimple(key)){
+                Log.d(TAG,"测试3");
                 userInfo.setTel(key);
             }else if(RegexUtils.isEmail(key)){
+
                 userInfo.setEmail(key);
             }else {
+
                 userInfo.setUserId(key);
             }
+
             loginWithOkHttp(loginAddress,userInfo);
         }
     }
