@@ -1,6 +1,5 @@
 package com.gxun.mynews;
 
-import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
@@ -34,10 +33,11 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     TextView tvCancel;
     EditText etUserName, etPassword, etRePassword, etTel, etEmail;
     Button btnRegister;
-    String TAG = "RegisterActivity";
-    String MSG;
+
     private static boolean isTelRight = false;
     private static boolean isEmailRight = false;
+
+    String TAG = "RegisterActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,7 +99,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if (hasFocus) {
-// 此处为得到焦点时的处理内容
+                    // 此处为得到焦点时的处理内容
                 } else {
                     String checkAddress = AppConst.UserInfo.checkEmailOrTel;
                     String tel = etTel.getText().toString();
@@ -109,7 +109,6 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                 }
             }
         });
-
     }
 
     protected void initWidget() {
@@ -211,8 +210,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                         public void run() {
                             try {
                                 if (jsonObject.getBoolean("flag") == true) {
-                                    Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
-                                    startActivity(intent);
+                                    finish();
                                     Toast.makeText(RegisterActivity.this, jsonObject.getString("msg"), Toast.LENGTH_SHORT).show();
                                 } else {
                                     //Toast.makeText(RegisterActivity.this,"登录失败",Toast.LENGTH_SHORT).show();

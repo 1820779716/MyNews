@@ -2,16 +2,16 @@ package com.gxun.mynews.util;
 
 public class AppConst {
 
-    public static final String SERVER_ADDRESS = "http://192.168.1.110:8080"; // 后端服务地址
+    public static final String SERVER_ADDRESS = "http://192.168.1.110:8080/"; // 后端服务地址
 
     public interface UserInfo{
-         String login = SERVER_ADDRESS+"/login";
-         String register = SERVER_ADDRESS+"register";
-         String getUser = SERVER_ADDRESS+"/getUser";
-         String checkEmailOrTel = SERVER_ADDRESS+"/checkEmailOrTel";
-         String forgetPassword=SERVER_ADDRESS+"/forgetPassword";
-         String modifyUserInformaintion=SERVER_ADDRESS+"/modifyUserInformaintion";
-         String changePassword=SERVER_ADDRESS+"/changePassword";
+         String login = SERVER_ADDRESS + "login";
+         String register = SERVER_ADDRESS + "register";
+         String getUser = SERVER_ADDRESS + "getUser";
+         String checkEmailOrTel = SERVER_ADDRESS + "checkEmailOrTel";
+         String forgetPassword = SERVER_ADDRESS + "forgetPassword";
+         String modifyUserInformation = SERVER_ADDRESS + "modifyUserInformation";
+         String changePassword = SERVER_ADDRESS + "changePassword";
     }
 
 
