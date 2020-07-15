@@ -5,10 +5,14 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -22,11 +26,24 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.TypeReference;
 import com.google.android.material.navigation.NavigationView;
+import com.gxun.mynews.Adapter.ListAdapter;
 import com.gxun.mynews.Adapter.RecycleAdapter;
+import com.gxun.mynews.entity.NewsInfo;
+import com.gxun.mynews.util.AppConst;
+import com.gxun.mynews.util.HttpUtil;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+import okhttp3.Callback;
+import okhttp3.Response;
 
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -36,6 +53,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private NavigationView navigationView;
     private RecyclerView recyclerView;
     private ImageView ivHead;
+    private ListView listView;
+
+    private ListAdapter listAdapter;
+    private RecyclerView homeRecyclerView;
+    public static final int LIST_VIEW = 1;
 
     private long exitTime; // 获取第一次点击返回键的系统时间
     private static final int INTERNET_REQUEST_CODE = 1;
@@ -50,6 +72,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         initPermission();
         initWidget();
         initData();
+
+        String newsAddress = AppConst.NewsInfoList.getAllNews;
+        getAllNewsWithOkHttp(newsAddress);
     }
 
     private void initWidget() {
@@ -57,6 +82,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         tvMenu = findViewById(R.id.menu);
         navigationView = findViewById(R.id.navigation_view);
         recyclerView = findViewById(R.id.recycler_view);
+        listView = findViewById(R.id.list_view);
         View v = navigationView.getHeaderView(0);
         tvAccount = (TextView) v.findViewById(R.id.account);
         ivHead = (ImageView) v.findViewById(R.id.head);
@@ -86,8 +112,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 }
             }
         });
-    }
 
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+            }
+        });
+    }
     private void initPermission() {
         if (ActivityCompat.checkSelfPermission(MainActivity.this, Manifest.permission.INTERNET) != PackageManager.PERMISSION_GRANTED) {
             //没有权限，申请权限
@@ -151,6 +183,57 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 Toast.makeText(this, "登录失败", Toast.LENGTH_SHORT);
                 break;
         }
+    }
+
+
+    Handler handler = new Handler() {
+        @Override
+        public void handleMessage(@NonNull Message msg) {
+            super.handleMessage(msg);
+            switch (msg.what) {
+                case LIST_VIEW:
+                    List<NewsInfo> newsInfoList = (List<NewsInfo>) msg.obj;
+                    listAdapter = new ListAdapter(newsInfoList);
+                    listView.setAdapter(listAdapter);
+                    break;
+            }
+        }
+    };
+
+    public void getAllNewsWithOkHttp(String address){
+        HttpUtil.getAllNewsWithOkhttp(address, new Callback() {
+            @Override
+            public void onFailure(okhttp3.Call call, IOException e) {
+                //在这里对异常情况进行处理
+            }
+            @Override
+            public void onResponse(okhttp3.Call call, Response response) throws IOException {
+                //得到服务器返回的具体内容
+                final String responseData = response.body().string();
+                try {
+                    // 转为JSONObject对象
+                    final JSONObject jsonObject = new JSONObject(responseData);
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            try {
+                                if (jsonObject.getBoolean("flag")==true) {
+                                    final List<NewsInfo> newsInfoList = JSON.parseObject(jsonObject.getString("newsInfoList"),new TypeReference<List<NewsInfo>>(){});
+                                    Message message = new Message();
+                                    message.what = LIST_VIEW;
+                                    message.obj = newsInfoList;
+                                    handler.sendMessage(message);
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    });
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 
     public void gotoFavorite() {

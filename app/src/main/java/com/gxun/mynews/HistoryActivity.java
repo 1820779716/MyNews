@@ -3,8 +3,8 @@ package com.gxun.mynews;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.util.Log;
 import android.view.View;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -13,7 +13,9 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.gxun.mynews.Adapter.ListAdapter;
 import com.gxun.mynews.entity.History;
+import com.gxun.mynews.entity.NewsInfo;
 import com.gxun.mynews.util.AppConst;
 import com.gxun.mynews.util.HttpUtil;
 
@@ -29,8 +31,10 @@ import okhttp3.Response;
 public class HistoryActivity extends AppCompatActivity implements View.OnClickListener {
 
     private TextView tvCancel, tvClear;
-    List<History> HistoryList;
+    private ListView lvHistory;
 
+    private List<History> histories;
+    private static final int HISTORY_LIST = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +48,7 @@ public class HistoryActivity extends AppCompatActivity implements View.OnClickLi
     protected void initWidget(){
         tvCancel = findViewById(R.id.cancel);
         tvClear = findViewById(R.id.clear);
+        lvHistory = findViewById(R.id.history_list);
     }
     protected void initData(){
         tvCancel.setOnClickListener(this);
@@ -62,25 +67,38 @@ public class HistoryActivity extends AppCompatActivity implements View.OnClickLi
         finish();
     }
 
-//    private void getHistoryWithOkhttp(String address) {
-//        HttpUtil.getHistoryWithOkhttp(address, new Callback() {
-//            @Override
-//            public void onFailure(@NotNull Call call, @NotNull IOException e) {
-//
-//            }
-//
-//            @Override
-//            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-//                String responseData = response.body().string();
-////                Log.i("11111",responseData);
-//                Gson gson = new Gson();
-//                HistoryList = gson.fromJson(responseData, new TypeToken<List<History>>() {}.getType());
-//                Message message = new Message();
-//                message.what = GRT_CART;
-//                message.obj = HistoryList;
-//                handler.sendMessage(message);
-//            }
-//        });
-//
-//    }
+    Handler handler = new Handler() {
+        @Override
+        public void handleMessage(@NonNull Message msg) {
+            super.handleMessage(msg);
+            switch (msg.what) {
+                case HISTORY_LIST:
+                    List<NewsInfo> newsInfoList = (List<NewsInfo>) msg.obj;
+                    ListAdapter listAdapter = new ListAdapter(newsInfoList);
+                    lvHistory.setAdapter(listAdapter);
+                    break;
+            }
+        }
+    };
+    private void getHistoryWithOkhttp(String address) {
+        HttpUtil.getHistoryWithOkhttp(address, new Callback() {
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+
+            }
+
+            @Override
+            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                String responseData = response.body().string();
+//                Log.i("11111",responseData);
+                Gson gson = new Gson();
+                histories = gson.fromJson(responseData, new TypeToken<List<History>>() {}.getType());
+                Message message = new Message();
+                message.what = HISTORY_LIST;
+                message.obj = histories;
+                handler.sendMessage(message);
+            }
+        });
+
+    }
 }

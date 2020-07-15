@@ -2,7 +2,7 @@ package com.gxun.mynews.util;
 
 public class AppConst {
 
-    public static final String SERVER_ADDRESS = "http://192.168.1.110:8080/"; // 后端服务地址
+    public static final String SERVER_ADDRESS = "http://192.168.43.198:8080/"; // 后端服务地址
 
     public interface UserInfo {
         String login = SERVER_ADDRESS + "login";
@@ -15,7 +15,7 @@ public class AppConst {
     }
 
 
-    public interface NewsInfo {
+    public interface NewsInfoList {
         String getNews = SERVER_ADDRESS + "getNews";
         String getAllNews = SERVER_ADDRESS + "getAllNews";
     }

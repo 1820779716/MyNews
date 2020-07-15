@@ -7,6 +7,7 @@ import com.gxun.mynews.entity.UserInfo;
 
 import java.util.HashMap;
 
+import okhttp3.Callback;
 import okhttp3.FormBody;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
@@ -60,7 +61,24 @@ public class HttpUtil {
         client.newCall(request).enqueue(callback);
     }
 
-    //获取历史记录商品
+    // 获取所有新闻
+    public static void getAllNewsWithOkhttp(String address, okhttp3.Callback callback){
+        OkHttpClient client = new OkHttpClient();
+        Request request = new Request.Builder()
+                .url(address)
+                .build();
+        client.newCall(request).enqueue(callback);
+    }
+
+
+    public static void getHistoryWithOkhttp(String address, Callback callback) {
+        OkHttpClient client = new OkHttpClient();
+        Request request = new Request.Builder()
+                .url(address)
+                .build();
+        client.newCall(request).enqueue(callback);
+    }
+    //获取历史记录
     public static void getHistoryWithOkhttp(String address, History h, okhttp3.Callback callback){
         OkHttpClient client = new OkHttpClient();
         RequestBody body = RequestBody.create(JSON_TYPE,JSON.toJSONString(h));

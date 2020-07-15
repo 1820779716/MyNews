@@ -32,7 +32,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     Button btnLogin;
     TextView tvCancel, tvRegister, tvForgetPassword;
     EditText etUserName, etPassword;
-    String TAG ="loginActivity";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -83,7 +82,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     public void goLogin(){
         UserInfo userInfo=new UserInfo();
-        String loginAddress= AppConst.UserInfo.login;
+        String loginAddress = AppConst.UserInfo.login;
         String key= etUserName.getText().toString().trim();
         String password = etPassword.getText().toString().trim();
         if (TextUtils.isEmpty(key)){
@@ -97,10 +96,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             }else if(RegexUtils.isEmail(key)){
                 userInfo.setEmail(key);
             }else {
-
                 userInfo.setUserId(key);
             }
-            loginWithOkHttp(loginAddress,userInfo);
+            loginWithOkHttp(loginAddress, userInfo);
         }
     }
 
@@ -117,7 +115,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 try {
                     // 转为JSONObject对象
                     final JSONObject jsonObject = new JSONObject(responseData);
-                    final UserInfo userInfo = Convert.fromJson(jsonObject.getString("user"), UserInfo.class);
 
                     runOnUiThread(new Runnable() {
                         @Override
@@ -125,6 +122,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                             try {
                                 if (jsonObject.getBoolean("flag")==true){
                                     Toast.makeText(LoginActivity.this, jsonObject.getString("msg"),Toast.LENGTH_SHORT).show();
+                                    final UserInfo userInfo = Convert.fromJson(jsonObject.getString("user"), UserInfo.class);
                                     Intent intent = new Intent();
                                     intent.setClass(LoginActivity.this, MainActivity.class);
                                     //把需要返回的数据存放在intent
