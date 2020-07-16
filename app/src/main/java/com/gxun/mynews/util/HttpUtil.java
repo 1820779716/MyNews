@@ -8,8 +8,6 @@ import com.gxun.mynews.entity.UserInfo;
 
 import java.util.HashMap;
 
-import okhttp3.Callback;
-import okhttp3.FormBody;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -82,13 +80,6 @@ public class HttpUtil {
         client.newCall(request).enqueue(callback);
     }
 
-    public static void getHistoryWithOkhttp(String address, Callback callback) {
-        OkHttpClient client = new OkHttpClient();
-        Request request = new Request.Builder()
-                .url(address)
-                .build();
-        client.newCall(request).enqueue(callback);
-    }
     //获取历史记录
     public static void getHistoryWithOkhttp(String address, History h, okhttp3.Callback callback){
         OkHttpClient client = new OkHttpClient();
@@ -101,9 +92,9 @@ public class HttpUtil {
     }
 
     // 一键删除浏览历史
-    public static void deleteAllHistoryWithOkhttp(String address, okhttp3.Callback callback){
+    public static void deleteAllHistoryWithOkhttp(String address, History h, okhttp3.Callback callback){
         OkHttpClient client = new OkHttpClient();
-        RequestBody body = new FormBody.Builder().build();
+        RequestBody body = RequestBody.create(JSON_TYPE,JSON.toJSONString(h));
         Request request = new Request.Builder()
                 .url(address)
                 .post(body)
@@ -123,13 +114,11 @@ public class HttpUtil {
     }
 
     // 添加浏览历史
-    public static void addHistoryWithOkhttp(String addrsss, History h, okhttp3.Callback callback){
+    public static void addHistoryWithOkhttp(String address, History h, okhttp3.Callback callback){
         OkHttpClient client = new OkHttpClient();
-        RequestBody body = new FormBody.Builder()
-                .add("h",JSON.toJSONString(h))
-                .build();
+        RequestBody body = RequestBody.create(JSON_TYPE,JSON.toJSONString(h));
         Request request = new Request.Builder()
-                .url(addrsss)
+                .url(address)
                 .post(body)
                 .build();
         client.newCall(request).enqueue(callback);
@@ -138,9 +127,7 @@ public class HttpUtil {
     //获取所有收藏
     public static void getCollectWithOkHttp(String url, Collect collect, okhttp3.Callback callback){
         OkHttpClient client = new OkHttpClient();
-        RequestBody body = new FormBody.Builder()
-                .add("c",JSON.toJSONString(collect))
-                .build();
+        RequestBody body = RequestBody.create(JSON_TYPE,JSON.toJSONString(collect));
         Request request = new Request.Builder()
                 .url(url)
                 .post(body)
@@ -149,35 +136,31 @@ public class HttpUtil {
     }
 
     // 添加收藏
-    public static void addCollectWithOkhttp(String url, Collect collect,okhttp3.Callback callback){
+    public static void addCollectWithOkhttp(String address, Collect collect,okhttp3.Callback callback){
         OkHttpClient client = new OkHttpClient();
-        RequestBody body = new FormBody.Builder()
-                .add("c",JSON.toJSONString(collect))
-                .build();
+        RequestBody body = RequestBody.create(JSON_TYPE,JSON.toJSONString(collect));
         Request request = new Request.Builder()
-                .url(url)
+                .url(address)
                 .post(body)
                 .build();
         client.newCall(request).enqueue(callback);
     }
 
     // 删除收藏
-    public static void delCollectWithOkhttp(String url, Collect collect,okhttp3.Callback callback){
+    public static void delCollectWithOkhttp(String address, Collect collect,okhttp3.Callback callback){
         OkHttpClient client = new OkHttpClient();
-        RequestBody body = new FormBody.Builder()
-                .add("c",JSON.toJSONString(collect))
-                .build();
+        RequestBody body = RequestBody.create(JSON_TYPE,JSON.toJSONString(collect));
         Request request = new Request.Builder()
-                .url(url)
+                .url(address)
                 .post(body)
                 .build();
         client.newCall(request).enqueue(callback);
     }
 
     // 删除所有收藏
-    public static void delAllCollectWithOkhttp(String address, okhttp3.Callback callback){
+    public static void delAllCollectWithOkhttp(String address, Collect collect, okhttp3.Callback callback){
         OkHttpClient client = new OkHttpClient();
-        RequestBody body = new FormBody.Builder().build();
+        RequestBody body = RequestBody.create(JSON_TYPE,JSON.toJSONString(collect));
         Request request = new Request.Builder()
                 .url(address)
                 .post(body)

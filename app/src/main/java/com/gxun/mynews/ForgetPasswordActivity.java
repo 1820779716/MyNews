@@ -39,6 +39,7 @@ public class ForgetPasswordActivity extends AppCompatActivity implements View.On
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_forget_password);
 
+        System.out.println("yes");
         initWidget(); //初始化控件
 
         tvCancel.setOnClickListener(this);

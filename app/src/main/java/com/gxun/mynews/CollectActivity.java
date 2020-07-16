@@ -44,6 +44,7 @@ public class CollectActivity extends AppCompatActivity implements View.OnClickLi
 
     public static String getColletAddr = AppConst.Collect.getCollect;
     public static String getNewsinfo = AppConst.NewsInfoList.getNews;
+    public static String delAllCollect = AppConst.Collect.delAllCollect;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,6 +83,9 @@ public class CollectActivity extends AppCompatActivity implements View.OnClickLi
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         // 点击“确认”后的操作
+                        Collect collect = new Collect();
+                        collect.setUserId(MainActivity.userId);
+                        delAllCollectWithOkhttp(delAllCollect, collect);
                     }
                 })
                 .setNegativeButton("否", new DialogInterface.OnClickListener() {
@@ -91,6 +95,7 @@ public class CollectActivity extends AppCompatActivity implements View.OnClickLi
                     }
                 }).show();
     }
+
     Handler handler = new Handler() {
         @Override
         public void handleMessage(@NonNull Message msg) {
@@ -104,6 +109,25 @@ public class CollectActivity extends AppCompatActivity implements View.OnClickLi
             }
         }
     };
+
+    private void delAllCollectWithOkhttp(String address, Collect c){
+        HttpUtil.delAllCollectWithOkhttp(address, c, new Callback() {
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+
+            }
+
+            @Override
+            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                String responseData = response.body().string();
+                try {
+                    final JSONObject jsonObject = new JSONObject(responseData);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
 
     private void getCollectWithOkHttp(String address, Collect c){
         HttpUtil.getCollectWithOkHttp(address, c, new Callback() {

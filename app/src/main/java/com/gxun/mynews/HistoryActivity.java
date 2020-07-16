@@ -44,6 +44,7 @@ public class HistoryActivity extends AppCompatActivity implements View.OnClickLi
 
     public static String getHistoryAddress = AppConst.History.getHistory;
     public static String getNewsinfo = AppConst.NewsInfoList.getNews;
+    public static String delAllHistoryAddr = AppConst.History.deleteAllHistory;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,6 +86,9 @@ public class HistoryActivity extends AppCompatActivity implements View.OnClickLi
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         // 点击“确认”后的操作
+                        History history = new History();
+                        history.setUserId(MainActivity.userId);
+                        deleteAllHistoryWithOkhttp(delAllHistoryAddr, history);
                     }
                 })
                 .setNegativeButton("否", new DialogInterface.OnClickListener() {
@@ -108,6 +112,26 @@ public class HistoryActivity extends AppCompatActivity implements View.OnClickLi
             }
         }
     };
+
+    private void deleteAllHistoryWithOkhttp(String address, History h){
+        HttpUtil.deleteAllHistoryWithOkhttp(address, h, new Callback() {
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+
+            }
+
+            @Override
+            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                String responseData = response.body().string();
+                try {
+                    final JSONObject jsonObject = new JSONObject(responseData);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
     private void getHistoryWithOkhttp(String address, History h) {
         HttpUtil.getHistoryWithOkhttp(address, h, new Callback() {
             @Override

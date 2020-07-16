@@ -121,9 +121,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         });
     }
     private void initPermission() {
-        if (ActivityCompat.checkSelfPermission(MainActivity.this, Manifest.permission.INTERNET) != PackageManager.PERMISSION_GRANTED) {
+        if (ActivityCompat.checkSelfPermission(MainActivity.this, Manifest.permission.INTERNET) != PackageManager.PERMISSION_GRANTED
+        || ActivityCompat.checkSelfPermission(MainActivity.this, Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED
+        ||ActivityCompat.checkSelfPermission(MainActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
             //没有权限，申请权限
-            String[] permissions = {Manifest.permission.INTERNET, Manifest.permission.READ_PHONE_STATE};
+            String[] permissions = {Manifest.permission.INTERNET, Manifest.permission.READ_PHONE_STATE, Manifest.permission.WRITE_EXTERNAL_STORAGE};
             //申请权限
             ActivityCompat.requestPermissions(MainActivity.this, permissions, INTERNET_REQUEST_CODE);
         }
