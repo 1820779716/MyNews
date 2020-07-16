@@ -10,7 +10,6 @@ import android.os.Message;
 import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -112,13 +111,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 }
             }
         });
-
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-            }
-        });
     }
     private void initPermission() {
         if (ActivityCompat.checkSelfPermission(MainActivity.this, Manifest.permission.INTERNET) != PackageManager.PERMISSION_GRANTED
@@ -187,7 +179,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
-
     Handler handler = new Handler() {
         @Override
         public void handleMessage(@NonNull Message msg) {
@@ -195,7 +186,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             switch (msg.what) {
                 case LIST_VIEW:
                     List<NewsInfo> newsInfoList = (List<NewsInfo>) msg.obj;
-                    listAdapter = new ListAdapter(newsInfoList);
+                    listAdapter = new ListAdapter(newsInfoList, listView);
                     listView.setAdapter(listAdapter);
                     break;
             }

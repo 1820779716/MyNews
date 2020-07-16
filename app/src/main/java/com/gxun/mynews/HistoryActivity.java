@@ -44,7 +44,7 @@ public class HistoryActivity extends AppCompatActivity implements View.OnClickLi
 
     public static String getHistoryAddress = AppConst.History.getHistory;
     public static String getNewsinfo = AppConst.NewsInfoList.getNews;
-    public static String delAllHistoryAddr = AppConst.History.deleteAllHistory;
+    public static String delAllHistoryAddr = AppConst.History.deleteHistory;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -106,7 +106,7 @@ public class HistoryActivity extends AppCompatActivity implements View.OnClickLi
             switch (msg.what) {
                 case HISTORY_LIST:
                     List<NewsInfo> newsInfoList = (List<NewsInfo>) msg.obj;
-                    HistoryAdapter listAdapter = new HistoryAdapter(newsInfoList);
+                    HistoryAdapter listAdapter = new HistoryAdapter(newsInfoList,lvHistory);
                     lvHistory.setAdapter(listAdapter);
                     break;
             }

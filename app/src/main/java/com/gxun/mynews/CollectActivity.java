@@ -103,7 +103,7 @@ public class CollectActivity extends AppCompatActivity implements View.OnClickLi
             switch (msg.what) {
                 case COLLECT_LIST:
                     List<NewsInfo> newsInfoList = (List<NewsInfo>) msg.obj;
-                    CollectAdapter listAdapter = new CollectAdapter(newsInfoList);
+                    CollectAdapter listAdapter = new CollectAdapter(newsInfoList, lvCollect);
                     lvCollect.setAdapter(listAdapter);
                     break;
             }
