@@ -3,6 +3,7 @@ package com.gxun.mynews.util;
 import com.alibaba.fastjson.JSON;
 import com.gxun.mynews.entity.Collect;
 import com.gxun.mynews.entity.History;
+import com.gxun.mynews.entity.NewsInfo;
 import com.gxun.mynews.entity.UserInfo;
 
 import java.util.HashMap;
@@ -70,6 +71,16 @@ public class HttpUtil {
         client.newCall(request).enqueue(callback);
     }
 
+    // 根据新闻ID获取新闻
+    public static void getNewsWithOkhttp(String address, NewsInfo newsInfo, okhttp3.Callback callback){
+        OkHttpClient client = new OkHttpClient();
+        RequestBody body = RequestBody.create(JSON_TYPE,JSON.toJSONString(newsInfo));
+        Request request = new Request.Builder()
+                .url(address)
+                .post(body)
+                .build();
+        client.newCall(request).enqueue(callback);
+    }
 
     public static void getHistoryWithOkhttp(String address, Callback callback) {
         OkHttpClient client = new OkHttpClient();

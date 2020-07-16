@@ -43,8 +43,8 @@ public class History {
 	public String toString() {
 		return "History{" +
 				"userId=" + userId +
-				", newId='" + newId + '\'' +
-				", browsCount='" + browsCount + '\'' +
+				", newId=" + newId +
+				", browsCount=" + browsCount  +
 				'}';
 	}
 }

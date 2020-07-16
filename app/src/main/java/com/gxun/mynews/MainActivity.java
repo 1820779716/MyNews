@@ -56,7 +56,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private ListView listView;
 
     private ListAdapter listAdapter;
-    private RecyclerView homeRecyclerView;
     public static final int LIST_VIEW = 1;
 
     private long exitTime; // 获取第一次点击返回键的系统时间
@@ -64,6 +63,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private static final int LOGIN_REQUEST_CODE = 2;
 
     private static boolean isLogin = false;
+    public static String userId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -171,7 +171,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case LOGIN_REQUEST_CODE:
                 if (resultCode == RESULT_OK) { //正常返回且有结果
                     super.onActivityResult(requestCode, resultCode, intent);
-                    String userId = intent.getExtras().getString("userId");
+                    userId = intent.getExtras().getString("userId");
                     String userName = intent.getExtras().getString("userName");
                     tvAccount.setText("ID:" + userId + "\n用户名:" + userName);
                     isLogin = true;
